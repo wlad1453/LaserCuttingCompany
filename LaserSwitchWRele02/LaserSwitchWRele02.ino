@@ -1,15 +1,16 @@
 /*
  * 1. The laser is switched off. The valve is switched off.  
- * 2. The laser is switched on -> the valve is switched on with no delay.
- * 3. 
+ * 2. The laser is switched on -> the valve is switched on immediately.
+ * 3. The "Wind" signal become low -> switching OFF procedure started
+ * 4. After a givem delay time the air valve and the compressor rele go OFF
+ * 5. Every 1000 mS a short blinking shows that the /uC is working
  * 
- * laserPin - input of laser ON signal
- * logicPin - switch from negative to positive logic (laser ON/OFF)
+ * laserPin - input of laser ON signal ("Wind" - negative logic)
+ * logicPin - switch from negative to positive logic if necessary (laser ON/OFF)
  * valvePin - switch ON air valve
  * valveHoldPin - switch ON the ballast holding resistor
  * relePin - Compressor rele pin (negative logic)
  */
-
 
 #define laserPin 7  
 #define logicPin 8
@@ -17,12 +18,11 @@
 #define valveHoldPin 6
 #define relePin 10
 
-
 bool laserOn = false, valveOn = false;
 bool switchingOff = false;                    // Switching off procedure going on
 bool positiveLogic = true;                    // Switch on if the laser signal is high
 
-int switchOffDelay = 5000;
+int switchOffDelay = 5000;                    // Delay between LaserOn signal became LOW and switching OFF air valve and compressor rele
 int blinkDuration  = 20;
 int blinkPeriod  = 1000;
 unsigned long stopWatchStart = 0;
@@ -79,7 +79,7 @@ void loop() {
     switchingOff = true;                                                    // the switching off process begins.
   }
   
-  if( switchingOff && laserOn ) {                                           // In case if during the switching off process the laser went on again
+  if( switchingOff && laserOn ) {                                           // In case if during the switching off procedure the laser went on again
       switchingOff = false;
   }  
 
@@ -102,7 +102,5 @@ if ( (millis() - blinkPeriodStart) > blinkPeriod) {
   if ( (millis() - blinkStart) > blinkDuration) {    
     digitalWrite( LED_BUILTIN, LOW );
   }  
-  // *** End blinking ***
-  
-    
+  // *** End blinking ***    
 }
