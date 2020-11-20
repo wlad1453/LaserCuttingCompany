@@ -7,6 +7,7 @@
  * logicPin - switch from negative to positive logic (laser ON/OFF)
  * valvePin - switch ON air valve
  * valveHoldPin - switch ON the ballast holding resistor
+ * relePin - Compressor rele pin (negative logic)
  */
 
 
@@ -36,13 +37,13 @@ void setup() {
   pinMode(relePin, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT); // Pin 13
 
-  positiveLogic = digitalRead(logicPin);
+  positiveLogic = digitalRead(logicPin);      // Check the logic of the imput signal ("Wind" on Laser Machine)
   
   Serial.begin(9600); 
   
   Serial.print(" *** Logic: "); Serial.println(digitalRead(positiveLogic)); 
 
-  digitalWrite  ( valvePin, LOW );  
+  digitalWrite  ( valvePin, LOW );            // Both valve control signals are low
   digitalWrite  ( valveHoldPin, LOW );  
   digitalWrite  ( relePin, HIGH );            // Rele is switched off (high signal level)
   delay(1000);
@@ -50,7 +51,7 @@ void setup() {
 
 void loop() {
   // *** Logic test, positive vs. negative imput signal ***
-  laserOn = digitalRead(laserPin);                                          // laser status reading
+  laserOn = digitalRead(laserPin);                                          // laser status reading (Wind)
   if( !positiveLogic ) laserOn = !laserOn; 
 
   // *** Air valve and copressor switching ON *** 
@@ -60,11 +61,11 @@ void loop() {
     digitalWrite  ( valveHoldPin, HIGH ); 
     digitalWrite  ( relePin, LOW );                 // Compressor rele is switched ON
     Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
-    delay(50);                                                              // 50 mS delay, first a low current is set, then the big one                                                    
-    digitalWrite  ( valvePin, HIGH );                                       // ??????? if the laser goes on during the switching off process    
+    delay(50);                                                              // 50 mS delay, first a low current is set, then the bigger one                                                    
+    digitalWrite  ( valvePin, HIGH );                                       // The main current value (??? if the laser goes on during the switching off process?)    
     Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
-    delay(500);                                                             // The delay which let the valve to go open
-    digitalWrite  ( valvePin, LOW );                                        // The only holding pin stayes on
+    delay(500);                                                             // This delay let the valve to become open
+    digitalWrite  ( valvePin, LOW );                                        // The only holding pin stayes on (only low level holding current flows through the valve)
     valveOn = true; 
     Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin));     
   }
@@ -72,7 +73,7 @@ void loop() {
   Serial.print("loop1: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
   // *** End switching ON ***
 
-  // *** Switching OFF process begins ***
+  // *** Switching OFF procedure begins ***
   if ( !switchingOff && valveOn && !laserOn ) {                             // In case the laser goes off during the air valve is on 
     stopWatchStart = millis();                                              // the stopwatch started and
     switchingOff = true;                                                    // the switching off process begins.
@@ -93,10 +94,6 @@ void loop() {
   // *** The valve and rele are switched OFF
 
   // *** Blinking with the builtin LED ***
- /* if ( !(millis() % 1000) ) {
-    blinkStart = millis();
-    digitalWrite( LED_BUILTIN, HIGH );
-  }  */
 if ( (millis() - blinkPeriodStart) > blinkPeriod) {
     blinkStart = millis();
     blinkPeriodStart = millis();
