@@ -22,7 +22,7 @@ bool laserOn = false, valveOn = false;
 bool switchingOff = false;                    // Switching off procedure going on
 bool positiveLogic = true;                    // Switch on if the laser signal is high
 
-int switchOffDelay = 5000;                    // Delay between LaserOn signal became LOW and switching OFF air valve and compressor rele
+int switchOffDelay = 5000;                    // Delay 5 Sec between LaserOn signal became LOW and switching OFF of the air valve and compressor rele
 int blinkDuration  = 20;
 int blinkPeriod  = 1000;
 unsigned long stopWatchStart = 0;
