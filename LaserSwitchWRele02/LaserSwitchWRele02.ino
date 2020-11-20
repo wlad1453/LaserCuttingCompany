@@ -19,14 +19,14 @@
 #define relePin 10
 
 bool laserOn = false, valveOn = false;
-bool switchingOff = false;                    // Switching off procedure going on
+bool switchingOff  = false;                   // Switching off procedure going on
 bool positiveLogic = true;                    // Switch on if the laser signal is high
 
 int switchOffDelay = 5000;                    // Delay 5 Sec between LaserOn signal became LOW and switching OFF of the air valve and compressor rele
 int blinkDuration  = 20;
-int blinkPeriod  = 1000;
-unsigned long stopWatchStart = 0;
-unsigned long blinkStart = 0;
+int blinkPeriod    = 1000;
+unsigned long stopWatchStart   = 0;
+unsigned long blinkStart       = 0;
 unsigned long blinkPeriodStart = 0;
 
 void setup() {  
@@ -39,10 +39,8 @@ void setup() {
 
   positiveLogic = digitalRead(logicPin);      // Check the logic of the imput signal ("Wind" on Laser Machine)
   
-  Serial.begin(9600); 
+  // Serial.begin(9600); 
   
-  Serial.print(" *** Logic: "); Serial.println(digitalRead(positiveLogic)); 
-
   digitalWrite  ( valvePin, LOW );            // Both valve control signals are low
   digitalWrite  ( valveHoldPin, LOW );  
   digitalWrite  ( relePin, HIGH );            // Rele is switched off (high signal level)
@@ -57,20 +55,15 @@ void loop() {
   // *** Air valve and copressor switching ON *** 
   if ( laserOn && !valveOn ) {                                              // if the laser is going on but the air valve isn't
                                                                             // switched on. It should be done at any time.
-    Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
     digitalWrite  ( valveHoldPin, HIGH ); 
     digitalWrite  ( relePin, LOW );                 // Compressor rele is switched ON
-    Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
     delay(50);                                                              // 50 mS delay, first a low current is set, then the bigger one                                                    
     digitalWrite  ( valvePin, HIGH );                                       // The main current value (??? if the laser goes on during the switching off process?)    
-    Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
     delay(500);                                                             // This delay let the valve to become open
     digitalWrite  ( valvePin, LOW );                                        // The only holding pin stayes on (only low level holding current flows through the valve)
     valveOn = true; 
-    Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin));     
   }
-
-  Serial.print("loop1: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
+  
   // *** End switching ON ***
 
   // *** Switching OFF procedure begins ***
@@ -89,16 +82,15 @@ void loop() {
     digitalWrite ( valveHoldPin, LOW );                                      // ************************************ NEW
     digitalWrite ( relePin, HIGH );
     switchingOff = false;
-  } 
-  Serial.print("loop2: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
+  }   
   // *** The valve and rele are switched OFF
 
   // *** Blinking with the builtin LED ***
-if ( (millis() - blinkPeriodStart) > blinkPeriod) {
-    blinkStart = millis();
-    blinkPeriodStart = millis();
-    digitalWrite( LED_BUILTIN, HIGH );
-  }  
+  if ( (millis() - blinkPeriodStart) > blinkPeriod) {
+      blinkStart = millis();
+      blinkPeriodStart = millis();
+      digitalWrite( LED_BUILTIN, HIGH );
+    }  
   if ( (millis() - blinkStart) > blinkDuration) {    
     digitalWrite( LED_BUILTIN, LOW );
   }  
