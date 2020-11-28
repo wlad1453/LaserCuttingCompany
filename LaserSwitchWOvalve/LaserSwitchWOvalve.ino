@@ -42,6 +42,8 @@ void setup() {
   digitalWrite  ( valveHoldPin, LOW );  
   digitalWrite  ( relePin, HIGH );            // Relay is switched off (high signal level)
   digitalWrite  ( ledPin, HIGH );
+    
+  // SerialMon.begin(9600); 
   delay(1000);
 }
 
@@ -53,21 +55,21 @@ void loop() {
   // *** Air valve and copressor switching ON *** 
   if ( laserOn && !valveOn ) {                                              // if the laser is going on but the air valve isn't
                                                                             // switched on. It should be done at any time.
-    Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
+    // Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
     digitalWrite  ( valveHoldPin, HIGH ); 
     digitalWrite  ( relePin, LOW );                 // Compressor rele is switched ON
     digitalWrite  ( ledPin, LOW );                  // LED is switched off
-    Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
+    // Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
     delay(50);                                                              // 50 mS delay, first a low current is set, then the big one                                                    
     digitalWrite  ( valvePin, HIGH );                                       // ??????? if the laser goes on during the switching off process    
-    Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
+    // Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
     delay(500);                                                             // The delay which let the valve to go open
     digitalWrite  ( valvePin, LOW );                                        // The only holding pin stayes on
     valveOn = true; 
-    Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin));     
+    // Serial.print("laserOn&&!valveOn 0: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin));     
   }
 
-  Serial.print("loop1: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
+  // Serial.print("loop1: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
   // *** End switching ON ***
 
   // *** Switching OFF process begins ***
@@ -91,7 +93,7 @@ void loop() {
   // *** The valve and rele are switched OFF
 
   // *** Blinking with the builtin LED ***
-  Serial.print("loop 2: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
+  // Serial.print("loop 2: valveHoldPin: "); Serial.print(digitalRead(valveHoldPin)); Serial.print(" valvePin: "); Serial.println(digitalRead(valvePin)); 
   if ( !(millis() % 1000) ) {
     blinkStart = millis();
     digitalWrite( LED_BUILTIN, HIGH );
