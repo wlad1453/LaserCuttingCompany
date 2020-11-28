@@ -7,6 +7,8 @@
  * logicPin - switch from negative to positive logic (laser ON/OFF)
  * valvePin - switch ON air valve
  * valveHoldPin - switch ON the ballast holding resistor
+ * relePin - switch ON the compressor rele
+ * ledPin - ON/OFF status LED
  */  
 
 
@@ -38,7 +40,7 @@ void setup() {
    
   digitalWrite  ( valvePin, LOW );  
   digitalWrite  ( valveHoldPin, LOW );  
-  digitalWrite  ( relePin, HIGH );            // Rele is switched off (high signal level)
+  digitalWrite  ( relePin, HIGH );            // Relay is switched off (high signal level)
   digitalWrite  ( ledPin, HIGH );
   delay(1000);
 }
