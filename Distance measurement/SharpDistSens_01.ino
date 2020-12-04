@@ -41,12 +41,12 @@ void loop() {
 
   if ( filterN > 1 ) { 
     for ( uint8_t i = 0; i < filterN; i++ ) {
-      distance_mm += 54610 / (analogRead(A0) - 17) - 2;
+      distance_mm += 54610 / (analogRead(A0) - 17) - 20;
       delay(50);  
       }
     distance_mm /= filterN;
   } else {  
-    distance_mm = 54610 / (analogRead(A0) - 17) - 2;
+    distance_mm = 54610 / (analogRead(A0) - 17) - 20;
   }
   delay(50);  
   
