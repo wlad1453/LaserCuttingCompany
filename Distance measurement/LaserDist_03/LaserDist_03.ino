@@ -108,12 +108,12 @@ void loop() {
     standDev = standDeviation( Dist, meanDist );
     }
 
-  Serial.print("Distance: ");  Serial.print(distance_mm);  Serial.print(" mm, mS: "); Serial.print(millis() - measTime_mS); 
-  Serial.print("  pro Sec: "); Serial.print(1000 / ((float)millis() - (float)measTime_mS) );
+  Serial.print("Distance:   ");  Serial.print(distance_mm);  Serial.print(" mm,     pro Sec: "); /*Serial.print(millis() - measTime_mS); 
+  Serial.print("  pro Sec: ");*/ Serial.print(1000 / ((float)millis() - (float)measTime_mS) );
   
   if ( sensor.timeoutOccurred() ) { Serial.print(" Timeout fault"); }
   if ( sN == 0 ) {
-    Serial.print(" sDev: "); Serial.print(standDev); 
+    Serial.print("   sDev: "); Serial.print(standDev); 
     standDev = 0;
     }
 
