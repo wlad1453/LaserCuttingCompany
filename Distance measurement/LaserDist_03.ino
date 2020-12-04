@@ -110,7 +110,7 @@ void loop() {
 
   Serial.print("Distance:   ");  Serial.print(distance_mm);  Serial.print(" mm,     pro Sec: "); /*Serial.print(millis() - measTime_mS); 
   Serial.print("  pro Sec: ");*/ Serial.print(1000 / ((float)millis() - (float)measTime_mS) );
-  
+    
   if ( sensor.timeoutOccurred() ) { Serial.print(" Timeout fault"); }
   if ( sN == 0 ) {
     Serial.print("   sDev: "); Serial.print(standDev); 
