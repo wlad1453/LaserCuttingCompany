@@ -1,5 +1,6 @@
 /*
  * STM laser range sensor VL53L0X
+ *
  * uint8_t last_status                - Статус последней передачи записи I²C. Обратитесь к документации Wire.endTransmission() для получения возвращаемых значений.
  * VL53L0X(void)                      - Конструктор
  * void setAddress(uint8_t new_addr)  - Изменяет адрес ведомого устройства I²C VL53L0X на заданное значение (7-разрядное, 7 бит).
